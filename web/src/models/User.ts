@@ -30,6 +30,11 @@ export class User extends Model<UserProps> {
     );
   }
 
+  setRandomAge(): void {
+    const age = Math.round(Math.random() * 100);
+    this.set({ age });
+  }
+
   // below was old version which has been refactored to above and Model class
 
   // public events: Eventing = new Eventing();

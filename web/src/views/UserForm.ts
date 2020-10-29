@@ -1,52 +1,50 @@
-export class UserForm {
-  constructor(public parent: Element) {}
+import { User, UserProps } from '../models/User';
+import { View } from './View';
 
+export class UserForm extends View<User, UserProps> {
   // see web/src/models/Eventing.ts for below syntax explanation 
   eventsMap(): { [key: string]: () => void } {
     // this is an old but simpler way of handling event mapping (simpler compared 
     // to React or Angular)
     return {
-      'click:button': this.onButtonClick,
-      'mouseenter:h1': this.onHeaderHover
+      'click:[data-js="setAge"]': this.onSetAgeClick,
+      'click:[data-js="setName"]': this.onSetNameClick,
+      'click:[data-js="saveUser"]': this.onSaveUserClick
     };
   }
-  
-  onButtonClick(): void {
-    console.log('button click');
+
+  // create as arrow function to avoid "Cannot read property 'setRandomAge' of undefined"
+  onSetAgeClick = (): void => {
+    this.model.setRandomAge();
   }
 
-  onHeaderHover(): void {
-    console.log('hovered h1');
+  onSetNameClick = (): void => {
+    // I wanted to use a data attribute selector, so need to cast to input el
+    const input = this.parent.querySelector('[data-js="nameField"]') as HTMLInputElement;
+    
+    // need type guard
+    if (input) {
+      const name = input.value;
+      if (name) {
+        this.model.set({ name });
+      } else {
+        alert('Please enter a name');
+      }
+    }
+  }
+
+  onSaveUserClick = (): void => {
+    this.model.save();
   }
 
   template(): string {
     return `
       <div>
-        <h1>User Form</h1>
-        <input />
-        <button>Click Me</button>
+        <input type="text" placeholder="${this.model.get('name')}" data-js="nameField" />
+        <button data-js="setName">Change Name</button>
+        <button data-js="setAge">Set Random Age</button>
+        <button data-js="saveUser">Save User</button>
       </div>
     `
-  }
-
-  bindEvents(fragment: DocumentFragment): void {
-    const eventsMap = this.eventsMap();
-
-    for (let eventKey in eventsMap) {
-      // es2015 syntax to destructure out the 2 results of the split and 
-      // assign to variables
-      const [eventName, selector] = eventKey.split(':');
-
-      fragment.querySelectorAll(selector).forEach(element => {
-        element.addEventListener(eventName, eventsMap[eventKey])
-      })
-    }
-  }
-
-  render(): void {
-    const templateElement = document.createElement('template');
-    templateElement.innerHTML = this.template();
-    this.bindEvents(templateElement.content);
-    this.parent.append(templateElement.content);
   }
 }

@@ -10,6 +10,7 @@ export class Attributes<T> {
     return this.data[key];
   }
 
+  // note: the update arg should be passed as an object
   set = (update: T): void => {
     Object.assign(this.data, update);
   }
