@@ -6,12 +6,16 @@ export class Attributes<T> {
   // where T is the data type passed to the constructor.
   // the return type is essentially a normal object lookup, returning, 
   // in this case, the value at key "K" of the interface "T"
-  get<K extends keyof T>(key: K): T[K] {
+  get = <K extends keyof T>(key: K): T[K] => {
     return this.data[key];
   }
 
-  set(update: T): void {
+  set = (update: T): void => {
     Object.assign(this.data, update);
+  }
+
+  getAll = (): T => {
+    return this.data;
   }
 }
 

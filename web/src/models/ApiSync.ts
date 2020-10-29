@@ -5,11 +5,11 @@ interface HasId {
 }
 
 // use a generic constraint to make sure T has an ID
-export class Sync<T extends HasId> {
+export class ApiSync<T extends HasId> {
   constructor(public rootUrl: string) {}
 
   fetch(id: number): AxiosPromise {
-    return axios.get(`${this.rootUrl}/${id}}`);
+    return axios.get(`${this.rootUrl}/${id}`);
   }
 
   save(data: T): AxiosPromise {
