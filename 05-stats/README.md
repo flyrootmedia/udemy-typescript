@@ -1,0 +1,1 @@
+## Creating a file reader class to parse a given type of data and log out specific columns. There are two versions here: one using prototypal inheritance with abstract generic classes, and one (the final version) using object composition with interfaces
