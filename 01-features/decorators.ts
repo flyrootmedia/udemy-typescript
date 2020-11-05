@@ -26,6 +26,7 @@ class Boat {
   }
 }
 
+// "Decorator Factory"
 // wrapping the decorator in a containg function that returns the actual decorator
 // allows you to pass custom values as args from the decorator, so in this case you 
 // could use logError on multiple methods and customize the message
