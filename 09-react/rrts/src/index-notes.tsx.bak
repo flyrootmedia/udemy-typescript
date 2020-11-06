@@ -1,0 +1,63 @@
+// moved this to a bak file because it has a bunch of notes and commented out code and was 
+// getting pretty messy
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+// when working with TS in React, we create interfaces to describe the props to pass 
+// to our components
+interface AppProps {
+  color?: string;
+}
+
+// interface AppState {
+//   counter: number;
+// }
+
+// Example of functional component
+// make sure to annotate the props interface, and the return type 
+// is JSX.Element
+// const App = (props: AppProps): JSX.Element => {
+//   return (
+//     <div>{props.color}</div>
+//   )
+// };
+
+// pass the interface to React.Component
+class App extends React.Component<AppProps> {
+  // this syntax works without passing the component a state 
+  // interface because it overrides the existing "state" property from 
+  // the React.Component type definition
+  state = { counter: 0 }
+
+  // when setting state in the constructor in TS, you must pass an interface for state
+  // because it's a generic type in the type definition and this syntax is attempting to 
+  // assign a value to that generic type. ** Choose one or the other
+  // constructor(props: AppProps) {
+  //   super(props);
+  //   this.state = { counter: 0 };
+  // }
+
+  onIncrement = (): void => {
+    this.setState({ counter: this.state.counter + 1 });
+  };
+
+  onDecrement = (): void => {
+    this.setState({ counter: this.state.counter - 1 });
+  };
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.onIncrement}>Increment</button>
+        <button onClick={this.onDecrement}>Decrement</button>
+        {this.state.counter}
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(
+  <App color="blue" />,
+  document.getElementById('root')
+)
